@@ -1,0 +1,101 @@
+﻿# ==========================================================
+# BITÁCORA DE COMANDOS - SISTEMAS OPERATIVOS III
+# ==========================================================
+
+
+# ----------------------------------------------------------
+# PRÁCTICA 2: Configuración de Red e Interfaces
+# ----------------------------------------------------------
+
+
+ifconfig                                       # Muestra la configuración actual de todas las interfaces de red activas
+sudo apt install net-tools                    # Instala el paquete que contiene herramientas clásicas como ifconfig
+sudo apt install net-tools                    # Intento de instalación (posible verificación)
+ifconfig                                       # Verifica si el comando ya funciona tras la instalación
+ip a                                          # Alternativa moderna a ifconfig para ver direcciones IP y estados
+clear                                         # Limpia el contenido de la terminal
+sudo ifconfig ens33 0.0.0.0                   # Elimina la dirección IP actual de la interfaz ens33
+ifconfig                                       # Verifica que la interfaz ens33 ya no tenga IP
+sudo ifconfig ens33 192.168.24.20 netmask 255.255.255.0 # Asigna una IP estática y máscara de subred temporal a ens33
+ifconfig                                       # Confirma la nueva IP asignada
+ip a                                          # Confirma la IP usando la herramienta moderna 'ip'
+clear                                         # Limpia la pantalla
+sudo ip a del 192.168.24.20/24 dev ens33     # Elimina específicamente la IP asignada usando el comando ip
+ifconfig                                       # Verifica la eliminación de la IP
+clear                                         # Limpia la pantalla
+ifconfig                                       # Consulta de estado de interfaces
+sudo ifconfig ens33 0.0.0.0                   # Asegura que la interfaz ens33 quede sin dirección IP
+ifconfig                                       # Verificación final de limpieza
+clear                                         # Limpia la pantalla
+sudo nano /etc/netplan/01-network-manager-all.yaml # Abre el archivo de configuración de red persistente de Netplan
+sudo netplan apply                           # Aplica los cambios realizados en el archivo YAML de Netplan
+ifconfig                                       # Verifica si Netplan aplicó la configuración correctamente
+sudo nano /etc/netplan/99_config.yaml         # Abre o crea un archivo de configuración adicional de Netplan
+sudo nano /etc/netplan/01-network-manager-all.yaml # Revisa la configuración del archivo original de Netplan
+sudo netplan apply                           # Aplica los cambios de configuración nuevamente
+ifconfig                                       # Verifica la IP resultante
+ifconfig                                       # Consulta de interfaces
+sudo ifconfig ens33 0.0.0.0                   # Limpia manualmente la IP de la interfaz ens33
+ifconfig                                       # Verificación de interfaz limpia
+sudo nano /etc/netplan/99_config.yaml         # Edita el archivo de configuración secundaria de red
+sudo netplan apply                           # Aplica la configuración definida en los archivos YAML
+ifconfig                                       # Verifica la dirección IP final configurada
+clear                                         # Limpia la pantalla
+sudo nano /etc/resolv.conf                   # Edita el archivo de configuración de los servidores DNS del sistema
+ping -4 8.8.8.8                              # Prueba conectividad básica hacia el DNS de Google (IPv4)
+ping -4 8.8.4.4                              # Prueba conectividad hacia el DNS secundario de Google (IPv4)
+ping -4 google.com                           # Prueba la resolución de nombres DNS y conectividad a internet
+history                                      # Muestra el historial de comandos ejecutados en la sesión
+
+
+# ----------------------------------------------------------
+# PRÁCTICA 3: Gestión de Usuarios y Grupos
+# ----------------------------------------------------------
+
+
+sudo adduser adrian                          # Crea un nuevo usuario llamado 'adrian' con su carpeta personal
+# Sudo usermod -aG sudo adrian               # (Comando fallido por sintaxis: 'S' mayúscula)
+sudo usermod -aG sudo adrian                 # Agrega al usuario 'adrian' al grupo 'sudo' (da privilegios de root)
+getent group sudo                            # Muestra los usuarios que pertenecen al grupo 'sudo'
+clear                                        # Limpia la pantalla
+sudo addgroup guest                          # Crea un nuevo grupo llamado 'guest'
+sudo adduser miguel                          # Crea un nuevo usuario llamado 'miguel'
+sudo usermod -aG guest miguel                # Agrega al usuario 'miguel' al grupo 'guest'
+getent group guest                           # Verifica quiénes son miembros del grupo 'guest'
+sudo deluser miguel                          # Elimina al usuario 'miguel' del sistema
+sudo delgroup guest                          # Elimina el grupo llamado 'guest'
+getent group guest                           # Verifica si el grupo 'guest' aún existe
+sudo deluser adrian                          # Elimina al usuario 'adrian' del sistema
+getent group sudo                            # Verifica la lista de administradores tras eliminar a adrian
+date                                         # Muestra la fecha y hora actual del sistema
+history                                      # Muestra el historial de comandos de la práctica 3
+
+
+# ----------------------------------------------------------
+# PRÁCTICA 4: Sistema de Archivos y Permisos
+# ----------------------------------------------------------
+
+
+mkdir materia                                # Crea un directorio llamado 'materia'
+cd materia/                                  # Entra al directorio 'materia'
+touch estudiante.txt                         # Crea un archivo vacío llamado 'estudiante.txt'
+vi estudiante.txt                            # Abre el editor de texto vi para editar el archivo
+cat estudiante.txt                           # Muestra el contenido del archivo 'estudiante.txt' en la terminal
+sudo chmod 700 estudiante.txt                # Da permisos totales al dueño; ninguno al grupo ni a otros
+sudo chmod 070 estudiante.txt                # Quita permisos al dueño; da totales al grupo; ninguno a otros
+cd                                           # Regresa al directorio personal del usuario (HOME)
+cd Escritorio/                               # Entra a la carpeta 'Escritorio'
+mkdir materia2                               # Crea el directorio 'materia2' en el Escritorio
+# cp materia/ estudiante.txt materia2/       # (Comando fallido por sintaxis de ruta/espacios)
+# cp materia/ estudiante.txt materia2        # (Comando fallido por sintaxis de ruta/espacios)
+cp materia/estudiante.txt materia2           # Copia el archivo desde 'materia' hacia la carpeta 'materia2'
+sudo cp materia/estudiante.txt materia2      # Copia el archivo usando privilegios de superusuario
+ls                                           # Lista los archivos en el directorio actual
+cd materia2                                  # Entra al directorio 'materia2'
+ls                                           # Verifica que el archivo 'estudiante.txt' se haya copiado
+cd ..                                        # Sube un nivel en el árbol de directorios
+rm -r materia                                # Elimina el directorio 'materia' y todo su contenido de forma recursiva
+ls                                           # Verifica los archivos restantes
+clear                                         # Limpia la pantalla
+date                                         # Muestra la fecha y hora
+history                                      # Muestra el historial completo de la práctica 4
